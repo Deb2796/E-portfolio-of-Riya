@@ -11,6 +11,7 @@
     <style>
         /* Modern Dark Theme */
         :root {
+            --header-height: 80px; /* New variable for header height */
             --dark-bg: #121212;
             --darker-bg: #0A0A0A;
             --accent: #4CAF50; /* Green for education theme */
@@ -30,7 +31,7 @@
         /* Smooth Scroll */
         html {
             scroll-behavior: smooth;
-            scroll-padding-top: 80px; /* Space for fixed navbar */
+            scroll-padding-top: var(--header-height); /* Updated with variable */
         }
         
         /* Navbar */
@@ -38,13 +39,15 @@
             position: fixed;
             top: 0;
             width: 100%;
+            height: var(--header-height);
             background: rgba(10, 10, 10, 0.9);
             backdrop-filter: blur(10px);
-            padding: 20px 5%;
+            padding: 0 5%;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-sizing: border-box;
         }
         
         .nav-links {
@@ -74,19 +77,20 @@
         /* Sections */
         section {
             min-height: 100vh;
-            padding: 100px 10% 80px;
-            scroll-margin-top: 80px; /* Prevent navbar overlap */
+            padding: calc(var(--header-height) + 50px) 10% 80px;
+            scroll-margin-top: var(--header-height);
         }
         
         /* Hero Section */
         #home {
-            height: 100vh;
+            height: calc(100vh - var(--header-height));
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             background: linear-gradient(to bottom, var(--darker-bg), var(--dark-bg));
+            padding-top: var(--header-height);
         }
         
         .profile-image {
@@ -270,7 +274,7 @@
         /* Certificates Section Styles */
         #certificates {
             background: var(--dark-bg);
-            padding: 100px 5%;
+            padding: calc(var(--header-height) + 50px) 5% 80px;
         }
 
         .certificates-container {
@@ -328,7 +332,7 @@
         /* Contact Section Styles */
         #contact {
             background: var(--darker-bg);
-            padding: 100px 10%;
+            padding: calc(var(--header-height) + 50px) 10% 80px;
         }
 
         .contact-container {
@@ -336,6 +340,7 @@
             gap: 50px;
             max-width: 1200px;
             margin: 0 auto;
+            padding-top: 20px;
         }
 
         .contact-left {
@@ -430,6 +435,10 @@
         
         /* Responsive Design */
         @media (max-width: 768px) {
+            :root {
+                --header-height: 70px;
+            }
+            
             h1 {
                 font-size: 3rem;
             }
@@ -499,6 +508,10 @@
             
             .contact-email {
                 justify-content: center;
+            }
+            
+            #contact {
+                padding: calc(var(--header-height) + 30px) 5% 50px;
             }
         }
 
@@ -702,7 +715,7 @@
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     window.scrollTo({
-                        top: targetElement.offsetTop - 80,
+                        top: targetElement.offsetTop - document.querySelector('nav').offsetHeight,
                         behavior: 'smooth'
                     });
                     
@@ -717,7 +730,7 @@
 
         // Highlight active section in navbar while scrolling
         window.addEventListener('scroll', () => {
-            const scrollPosition = window.scrollY + 100;
+            const scrollPosition = window.scrollY + document.querySelector('nav').offsetHeight;
             
             document.querySelectorAll('section').forEach(section => {
                 const sectionTop = section.offsetTop;
